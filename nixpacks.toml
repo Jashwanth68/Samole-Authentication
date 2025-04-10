@@ -1,0 +1,2 @@
+[phases.setup]
+nixPkgs = ["python3", "python3Packages.setuptools", "python3Packages.pip", "python3Packages.distutils_extra", "gcc"]
