@@ -82,7 +82,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# ✅ Firebase Admin SDK Initialization
+# ✅ Firebase Admin SDK Initialization using Option 2 (Local File)
 FIREBASE_CERT_PATH = os.path.join(BASE_DIR, 'serviceAccountKey.json')
 
 if not firebase_admin._apps:
