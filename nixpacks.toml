@@ -1,2 +1,8 @@
 [phases.setup]
-nixPkgs = ["python3", "python3Packages.setuptools", "python3Packages.pip", "python3Packages.distutils_extra", "gcc"]
+nixPkgs = ["python3", "gcc", "python3Packages.setuptools", "python3Packages.pip", "python3Packages.distutils"]
+
+[phases.install]
+cmds = ["python -m venv /opt/venv", ". /opt/venv/bin/activate", "pip install -r requirements.txt"]
+
+[phases.start]
+cmd = "gunicorn adaptable_fascination.wsgi:application --bind 0.0.0.0:$PORT"
