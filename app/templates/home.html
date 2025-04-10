@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Google Sign In</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <script>
+        // Firebase config from your Firebase Console
+        const firebaseConfig = {
+            apiKey: "AIzaSyBS3G1MlgCJZevKog3-IXQ__cPZuYXcIfM",
+    authDomain: "auth-sample-7aa1a.firebaseapp.com",
+    projectId: "auth-sample-7aa1a",
+    storageBucket: "auth-sample-7aa1a.firebasestorage.app",
+    messagingSenderId: "631197982141",
+    appId: "1:631197982141:web:26d7663ffc9be5752906d4",
+    measurementId: "G-8XF2FF2PSH"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        async function signInWithGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+
+            try {
+                const result = await firebase.auth().signInWithPopup(provider);
+                const token = await result.user.getIdToken();
+
+                // Send token to Django backend
+                const response = await fetch('/verify-token/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    alert(`Signed in as ${data.uid}`);
+                } else {
+                    alert("Authentication failed: " + data.error);
+                }
+
+            } catch (error) {
+                console.error(error);
+                alert("Sign-in error: " + error.message);
+            }
+        }
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 h-screen flex items-center justify-center">
+    <div class="bg-white p-8 rounded shadow-md text-center">
+        <h1 class="text-2xl font-bold mb-6">Sign In with Google</h1>
+        <button onclick="signInWithGoogle()" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600">
+            Sign in with Google
+        </button>
+    </div>
+</body>
+</html>
